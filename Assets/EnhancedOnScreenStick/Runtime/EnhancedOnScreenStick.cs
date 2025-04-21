@@ -97,7 +97,9 @@ namespace EnhancedOnScreenControls
 
         public void OnDrag(PointerEventData eventData)
         {
-            var camera = canvas.worldCamera;
+            Camera camera = canvas.worldCamera;
+            if(canvas.renderMode == RenderMode.ScreenSpaceOverlay)
+                camera = null;
             var position = RectTransformUtility.WorldToScreenPoint(camera, background.position);
 
             var input = (eventData.position - position) / (movementRange * canvas.scaleFactor) * EnabledAxis();
@@ -120,7 +122,9 @@ namespace EnhancedOnScreenControls
 
         Vector2 ScreenToAnchoredPosition(Vector2 screenPosition)
         {
-            var camera = canvas.worldCamera;
+            Camera camera = canvas.worldCamera;
+            if(canvas.renderMode == RenderMode.ScreenSpaceOverlay)
+                camera = null;
             if (RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform, screenPosition, camera, out var localPoint))
             {
                 var pivotOffset = rectTransform.pivot * rectTransform.sizeDelta;
